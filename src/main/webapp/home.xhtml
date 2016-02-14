@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>
+        <h:outputText value="JSF Registration App"/>
+    </title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css"/>
+</h:head>
+<h:body>
+    <h1>
+        <h:outputText value="JSF Registration App"/>
+    </h1>
+
+    <h3>
+        <h:outputText value="Registration form"/>
+    </h3>
+    <f:view>
+        <h:form>
+            <h:panelGrid id="panel" columns="3" cellpadding="10">
+                <h:outputText value="First name"/>
+                <h:inputText required="true" requiredMessage="Please, input first name" id="inputFirstName"
+                             value="#{users.userModel.firstName}">
+                    <f:ajax event="blur" render="firstNameError firstNameFooterMessage all"/>
+                </h:inputText>
+                <h:message for="inputFirstName" id="firstNameError" style="color: red"/>
+
+                <h:outputText value="Last name"/>
+                <h:inputText required="true" requiredMessage="Please, input last name" id="inputLastName"
+                             value="#{users.userModel.lastName}">
+                    <f:ajax event="blur" render="lastNameError lastNameFooterMessage all"/>
+                </h:inputText>
+                <h:message for="inputLastName" id="lastNameError" style="color: red"/>
+
+                <h:outputText value="Sex"/>
+                <h:selectOneRadio  id="selectSex" value="#{users.userModel.sex}">
+                    <f:selectItem itemValue="man" itemLabel="Man"/>
+                    <f:selectItem itemValue="woman" itemLabel="Woman"/>
+                </h:selectOneRadio>
+                <h:message for="selectSex" id="sexError" style="color: red"/>
+
+                <h:outputText value="Date of birth"/>
+                <h:inputText id="birthday" value="#{users.userModel.dateOfBirth}">
+                    <f:validator validatorId="UserBdayValidator"/>
+                    <f:ajax event="blur" render="birthdayError birthDateFooterMessage all"/>
+                </h:inputText>
+                <h:message for="birthday" id="birthdayError" style="color: red"/>
+
+                <h:outputText value="Email adress"/>
+                <h:inputText id="mail" value="#{users.userModel.mail}">
+                    <f:validator validatorId="UserMailValidator"/>
+                    <f:ajax event="blur" render="mailError mailFooterMessage all"/>
+                </h:inputText>
+                <h:message for="mail" id="mailError" style="color: red"/>
+
+                <h:outputText value="Service level"/>
+                <h:selectOneMenu required="true" requiredMessage="Please, select service level" id="selectServiceLevel"
+                                 value="#{users.userModel.serviceLevel}">
+                    <f:selectItem itemValue="Basic" itemLabel="Basic"/>
+                    <f:selectItem itemValue="Medium" itemLabel="Medium"/>
+                    <f:selectItem itemValue="Premium" itemLabel="Premium"/>
+                    <f:ajax event="blur" render="serviceLevelError serviceLevelFooterMessage all"/>
+                </h:selectOneMenu>
+                <h:message for="selectServiceLevel" id="serviceLevelError" style="color: red"/>
+            </h:panelGrid>
+            <h:messages id="all"/>
+            <!--<h:messages id="firstNameFooterMessage"/>
+            <h:messages id="lastNameFooterMessage"/>
+            <h:messages id="sexFooterMessage"/>
+            <h:messages id="birthDateFooterMessage"/>
+            <h:messages id="mailFooterMessage"/>
+            <h:messages id="serviceLevelFooterMessage"/>
+-->
+            <br/>
+
+            <h:commandButton value="Register" action="#{users.addUser}">
+                <f:ajax render="outputUsers"
+                        execute="selectSex inputFirstName inputLastName birthday mail selectServiceLevel"/>
+            </h:commandButton>
+
+            <br/>
+            <br/>
+
+            <h:outputLabel id="outputUsers" value="#{users}" styleClass="preformatted"/>
+
+        </h:form>
+    </f:view>
+</h:body>
+
+</html>
